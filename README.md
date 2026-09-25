@@ -13,7 +13,7 @@ Práctica 01 (UD1 – UD3) · DAW2 · IES Francisco Romero Vargas
 
 ```bash
 git clone https://github.com/PerezismaelO/mi-proyecto-DWEC.git
-cd mi-proyecto
+cd mi-proyecto-DWEC
 npm install
 npm run dev
 ```
