@@ -12,7 +12,7 @@ Práctica 01 (UD1 – UD3) · DAW2 · IES Francisco Romero Vargas
 ## Instalación y uso
 
 ```bash
-git clone https://github.com/PerezismaelO/mi-proyecto.git
+git clone https://github.com/PerezismaelO/mi-proyecto-DWEC.git
 cd mi-proyecto
 npm install
 npm run dev
