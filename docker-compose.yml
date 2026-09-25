@@ -1,0 +1,12 @@
+services:
+  vite-dev:
+    image: node:22
+    container_name: mi-proyecto-dev
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "5173:5173"
+    stdin_open: true
+    tty: true
+    command: bash
