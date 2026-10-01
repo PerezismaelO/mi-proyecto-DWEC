@@ -8,16 +8,11 @@ Práctica 01 (UD1 – UD3) · DAW2 · IES Francisco Romero Vargas
 
 Pendiente de completar cuando esté definida la estructura.
 
-## Requisitos
-
-- Node.js
-- npm
-
 ## Instalación y uso
 
 ```bash
 git clone https://github.com/PerezismaelO/mi-proyecto-DWEC.git
-cd mi-proyecto-DWEC
+cd mi-proyecto
 npm install
 npm run dev
 ```
