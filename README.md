@@ -6,14 +6,7 @@ Práctica 01 (UD1 – UD3) · DAW2 · IES Francisco Romero Vargas
 
 ## Organización del código
 
-src/
-├── modelo-datos/
-│   ├── catalogo-productos.js   → definición y datos de los juegos
-│   └── estado-conservacion.js  → estados posibles y sus reglas
-├── ...
-└── main.js                     → punto de entrada, orquesta el flujo
-
-He separado X de Y porque...
+Pendiente de completar cuando esté definida la estructura.
 
 ## Requisitos
 
