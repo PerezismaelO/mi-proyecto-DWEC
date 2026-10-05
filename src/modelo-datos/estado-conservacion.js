@@ -1,4 +1,4 @@
-const estado = [
+export const estado = [
     { nombre : "nuevo-precintado", descripcion: "El producto está completamente nuevo y sellado en su embalaje original." },
     { nombre : "usado-como-nuevo", descripcion: "El producto ha sido usado pero se encuentra en excelentes condiciones, sin signos visibles de desgaste." },
     { nombre : "usado-caja-danada", descripcion: "El producto ha sido usado y la caja presenta daños visibles, aunque el contenido está en buen estado." },
