@@ -1,43 +1,48 @@
 # RetroStock
 
-Aplicación de consola en JavaScript para gestionar el inventario y las ventas de una tienda de videojuegos retro.
+Gestor de inventario y ventas de una tienda de videojuegos retro. Funciona por consola con `prompt()`.
 
-Práctica 01 (UD1 – UD3) · DAW2 · IES Francisco Romero Vargas
-
-## Organización del código
-
-src/
-├── modelo-datos/
-│   ├── catalogo-productos.js   → definición y datos de los juegos
-│   └── estado-conservacion.js  → estados posibles y sus reglas
-├── ...
-└── main.js                     → punto de entrada, orquesta el flujo
-
-He separado X de Y porque...
-
-## Requisitos
-
-- Node.js
-- npm
-
-## Instalación y uso
+## Cómo ejecutarlo
 
 ```bash
-git clone https://github.com/PerezismaelO/mi-proyecto-DWEC.git
-cd mi-proyecto-DWEC
+docker compose up -d
+docker exec -it mi-proyecto-dev bash
 npm install
-npm run dev
+npm run dev -- --host
 ```
 
-Otros comandos:
-
-- `npm run lint`: revisa el código con ESLint
-- `npm run format`: formatea el código con Prettier
+Abrir `http://localhost:5173`, abrir la consola (F12) y pulsar **Abrir menú**.
 
 ## Organización del código
 
-Pendiente de completar.
+```
+src/
+  modelo-datos/
+    catalogo-productos.js    
+    estado-conservacion.js 
+  logica/
+    reglas.js              
+    inventario.js           
+    consultas.js           
+  ui/
+    menu.js                
+  main.js                   
+```
 
-## Autor
+## Modelo de datos
 
-Ismael Pérez
+Cada producto es un objeto con:
+
+| Campo | Tipo | Ejemplo |
+|---|---|---|
+| id | number | 6 |
+| titulo | string | "GoldenEye 007" |
+| plataforma | string | "Nintendo 64" |
+| categoria | string | "shooter" |
+| precioBase | number | 34.99 |
+| estadoConservacion | string | "usado-como-nuevo" |
+| stock | number | 7 |
+
+El catálogo nunca se modifica: vender y reponer devuelven un array nuevo con `map` y spread.
+
+```
