@@ -1,4 +1,4 @@
-import { precioPorUnidad, totalVenta } from "./reglas.js";
+import { precioPorUnidad, totalVenta } from './reglas.js';
 // Traemos las funciones de precio que hicimos en reglas.js
 
 export const actualizarProducto = (productos, id, cambio) =>
@@ -11,7 +11,10 @@ export const reponerStock = (productos, id, ...cantidades) => {
   const total = cantidades.reduce((suma, cantidad) => suma + cantidad, 0);
   // Suma todas las cantidades. Ejemplo: [5, 2] da 7
 
-  return actualizarProducto(productos, id, (producto) => ({ ...producto, stock: producto.stock + total }));
+  return actualizarProducto(productos, id, (producto) => ({
+    ...producto,
+    stock: producto.stock + total,
+  }));
   // Copia el producto (...producto) y solo cambia el stock sumándole las unidades
 };
 
@@ -20,18 +23,21 @@ export const venderProducto = (productos, id, unidades) => {
   // Busca el producto por su id
 
   if (!producto) {
-    return { ok: false, mensaje: "No existe ese producto." };
+    return { ok: false, mensaje: 'No existe ese producto.' };
     // Si no existe, devolvemos un error
   } else if (!Number.isInteger(unidades) || unidades <= 0) {
-    return { ok: false, mensaje: "La cantidad no es válida." };
+    return { ok: false, mensaje: 'La cantidad no es válida.' };
     // Si la cantidad no es un número entero mayor que 0, error
   } else if (producto.stock < unidades) {
     return { ok: false, mensaje: `Solo quedan ${producto.stock} unidades.` };
     // Si no hay stock suficiente, error
   }
 
-  const nuevosProductos = actualizarProducto(productos, id, (p) => ({ ...p, stock: p.stock - unidades }));
-  // Lista nueva con el stock restado 
+  const nuevosProductos = actualizarProducto(productos, id, (p) => ({
+    ...p,
+    stock: p.stock - unidades,
+  }));
+  // Lista nueva con el stock restado
 
   const venta = {
     titulo: producto.titulo,
@@ -54,7 +60,7 @@ export const crearRegistroVentas = () => {
     registrar: (venta) => {
       ventas = [...ventas, venta];
     },
-    // Añade una venta creando una lista nueva 
+    // Añade una venta creando una lista nueva
 
     obtener: () => [...ventas],
     // Devuelve una copia de las ventas para que nadie pueda cambiarlas

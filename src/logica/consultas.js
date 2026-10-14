@@ -1,11 +1,11 @@
-import { precioPorUnidad, stockBajo, redondear } from "./reglas.js";
+import { precioPorUnidad, stockBajo, redondear } from './reglas.js';
 
-export const formatearEuros = (numero) => numero.toFixed(2).replace(".", ",") + " €";
+export const formatearEuros = (numero) => numero.toFixed(2).replace('.', ',') + ' €';
 // Convierte 42.75 en "42,75 €"
 
 export const formatearProducto = (producto) => {
   const { id, titulo, plataforma, categoria, estadoConservacion, stock } = producto;
-  const aviso = stockBajo(producto) ? " ⚠️ Stock bajo" : "";
+  const aviso = stockBajo(producto) ? ' ⚠️ Stock bajo' : '';
   return `#${id} ${titulo} [${plataforma}] · ${categoria} · ${estadoConservacion} · ${formatearEuros(precioPorUnidad(producto))} · stock: ${stock}${aviso}`;
 };
 
@@ -17,7 +17,9 @@ export const filtrarPorCategoria = (productos, categoria) =>
 export const filtrarStockBajo = (productos) => productos.filter(stockBajo);
 
 export const buscarProducto = (productos, texto) =>
-  productos.find((p) => p.id === Number(texto) || p.titulo.toLowerCase().includes(texto.toLowerCase()));
+  productos.find(
+    (p) => p.id === Number(texto) || p.titulo.toLowerCase().includes(texto.toLowerCase()),
+  );
 // Busca por id o por parte del título
 
 export const generarInforme = (productos, ventas) => {
@@ -31,11 +33,13 @@ export const generarInforme = (productos, ventas) => {
 
   const masVendido = Object.entries(unidadesPorJuego).reduce(
     (mejor, actual) => (actual[1] > mejor[1] ? actual : mejor),
-    ["Ninguno", 0],
+    ['Ninguno', 0],
   );
   // Se queda con el juego que más unidades ha vendido
 
-  const valorStock = redondear(productos.reduce((suma, p) => suma + precioPorUnidad(p) * p.stock, 0));
+  const valorStock = redondear(
+    productos.reduce((suma, p) => suma + precioPorUnidad(p) * p.stock, 0),
+  );
 
   const hayStockBajo = productos.some(stockBajo);
 
