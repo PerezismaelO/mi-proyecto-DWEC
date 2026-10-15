@@ -8,6 +8,8 @@ import {
   formatearProducto,
   generarInforme,
   listarTodo,
+  porcentajeStock,
+  totalStockBajo,
 } from '../logica/consultas.js';
 
 const MENU = `=== RETROSTOCK ===
@@ -36,7 +38,6 @@ const verCatalogo = (productos) => {
   switch (opcion) {
     case '1':
       mostrarLista('Catálogo completo', listarTodo(productos));
-      break;
     case '2': {
       const categoria = prompt('¿Qué categoría? (RPG, Plataforma, Lucha...)') || '';
       mostrarLista(

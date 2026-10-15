@@ -9,7 +9,7 @@ export const formatearProducto = (producto) => {
   return `#${id} ${titulo} [${plataforma}] · ${categoria} · ${estadoConservacion} · ${formatearEuros(precioPorUnidad(producto))} · stock: ${stock}${aviso}`;
 };
 
-export const listarTodo = (productos) => productos.map(formatearProducto);
+export const listarTodo = (productos) => (productos.map(formatearProducto) , porcentajeStock(productos));
 
 export const filtrarPorCategoria = (productos, categoria) =>
   productos.filter((p) => p.categoria.toLowerCase() === categoria.toLowerCase());
@@ -44,4 +44,21 @@ export const generarInforme = (productos, ventas) => {
   const hayStockBajo = productos.some(stockBajo);
 
   return { totalFacturado, masVendido, valorStock, hayStockBajo };
+
+  const porcentajeStock = productos.map((p) => ({
+    titulo: p.titulo,
+    porcentaje: redondear((p.stock / 10) * 100),
+  }));
+  return porcentajeStock;
+
+
+
+  const totalStockBajo = productos.reduce((suma, p) => (stockBajo(p) ? suma + precioPorUnidad(p) * p.stock : suma), 0);
+  return { porcentajeStock, totalStockBajo: redondear(totalStockBajo) };
 };
+
+
+
+// En el listado muestra para cada producto que porcentaje
+// de stock tiene sobre un max de 10, sin guardarlo en el catalogo 
+// y dsp con reduce calcula el valor total de los productos con stock bajo
