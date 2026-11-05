@@ -15,7 +15,10 @@ export class Tablero {
   // ✍️ A3 ──────────────────────────────────────────────────────────────────────
   constructor(limiteEnCurso = 3) {
     // Crea las tres columnas; solo «En curso» lleva límite WIP (limiteEnCurso)
-    throw new Error("Sin hacer");
+    for (const nombre of Tablero.COLUMNAS) { // Recorremos las 3 columnas: por hacer, en curso y hecho. 
+      const limite = nombre === "En curso" ? limiteEnCurso: undefined; // Solo la columna "En curso" tiene limite
+      this.columnas.set(nombre, new Columna(nombre, limite)) // Creamos las columnas
+    }
   }
 
   // static desde(datos, limiteEnCurso): un Tablero con una tarea por cada objeto de datos
@@ -34,7 +37,7 @@ export class Tablero {
   // mover(id, destino): Error si no existe la tarea · Error si la columna destino está llena
   //   (¡comprueba ANTES de quitarla de su columna, o se perdería!) · la mueve y la devuelve
 
-  // completar(id): la mueve a «Hecho» y añade a «Por hacer» lo que devuelva tarea.alCompletar()
+  // completar(id): la mueve a «Hecho» y añade a « Por hacer» lo que devuelva tarea.alCompletar()
   //   ⚠️ Sin preguntar si es recurrente: eso es el polimorfismo
 
   // resumen(hoy = new Date()): { porHacer, enCurso, hecho, vencidas }
