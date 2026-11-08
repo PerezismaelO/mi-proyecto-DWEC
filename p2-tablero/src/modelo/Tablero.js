@@ -11,13 +11,13 @@ export class Tablero {
   static COLUMNAS = Object.freeze(["Por hacer", "En curso", "Hecho"]);
   static VERSION_DATOS = 1; // (bloque C) si algún día cambia el formato guardado, se sube
   // Privado: #columnas, un Map nombre → Columna
-
+   #columnas = new Map();
   // ✍️ A3 ──────────────────────────────────────────────────────────────────────
   constructor(limiteEnCurso = 3) {
     // Crea las tres columnas; solo «En curso» lleva límite WIP (limiteEnCurso)
     for (const nombre of Tablero.COLUMNAS) { // Recorremos las 3 columnas: por hacer, en curso y hecho. 
       const limite = nombre === "En curso" ? limiteEnCurso: undefined; // Solo la columna "En curso" tiene limite
-      this.columnas.set(nombre, new Columna(nombre, limite)) // Creamos las columnas
+      this.#columnas.set(nombre, new Columna(nombre, limite)) // Creamos las columnas
     }
   }
 
@@ -38,7 +38,7 @@ export class Tablero {
 
   // Devuelve la columna con ese nombre, o lanza un error si no existe
   columna(nombre) {
-    const columna = this.columnas.get(nombre);
+    const columna = this.#columnas.get(nombre);
     if (columna === undefined) {
       throw new Error(`No existe la columna ${nombre}`);
     }
@@ -46,7 +46,7 @@ export class Tablero {
   }
   // Las tres columnas en un array (el Map guarda el orden en que se metieron)
   get columnas() {
-    return [...this.columnas.values()];
+    return [...this.#columnas.values()];
   }
 
   // crearTarea(datos): TareaRecurrente si datos trae cadaDias, Tarea si no → a «Por hacer»
@@ -69,7 +69,7 @@ export class Tablero {
 
   // Busca la tarea en todas las columnas; si no está, devuelve null
   buscar(id) {
-    for (const columna of this.columnas) {
+    for (const columna of this.#columnas.values()) {
       const tarea = columna.tareas.find((t) => t.id === id);
       if (tarea !== undefined) {
         return tarea;
@@ -80,7 +80,7 @@ export class Tablero {
 
   // Devuelve la columna donde está la tarea, si no devuelve null
   dondeEsta(id) {
-    for (const columna of this.columnas) {
+    for (const columna of this.#columnas.values()) {
       if (columna.tiene(id)) {
         return columna;
       }
@@ -92,14 +92,14 @@ export class Tablero {
 
   // Mueve la tarea a otra columna y la devuelve
   mover(id, destino) {
-    return this.trasladar(id, destino);
+    return this.#trasladar(id, destino);
   }
   // completar(id): la mueve a «Hecho» y añade a « Por hacer» lo que devuelva tarea.alCompletar()
   //   ⚠️ Sin preguntar si es recurrente: eso es el polimorfismo
 
   // La pasa a «Hecho» y mete en «Por hacer» lo que devuelva alCompletar().
   completar(id) {
-    const tarea = this.trasladar(id, "Hecho");
+    const tarea = this.#trasladar(id, "Hecho");
     for (const nueva of tarea.alCompletar()) {
       this.columna("Por hacer").añadir(nueva);
     }
@@ -130,6 +130,27 @@ export class Tablero {
   //     MovimientoNoPermitidoError. Todo se comprueba ANTES de tocar nada.
   //   Pista: mover y completar hacen casi lo mismo. Un método privado #trasladar(id, destino)
   //   con las comprobaciones evita escribirlas dos veces.
+
+    #trasladar(id, destino) {
+    const columnaDestino = this.columna(destino);
+    const columnaOrigen = this.dondeEsta(id);
+
+    if (columnaOrigen === null) {
+      throw new Error(`No existe la tarea ${id}`);
+    }
+
+    if (columnaOrigen.nombre === "Hecho" || columnaOrigen === columnaDestino) {
+      throw new MovimientoNoPermitidoError(id, columnaOrigen.nombre, columnaDestino.nombre);
+    }
+
+    if (columnaDestino.llena) {
+      throw new ColumnaLlenaError(columnaDestino);
+    }
+
+    const tarea = columnaOrigen.quitar(id);
+    columnaDestino.añadir(tarea);
+    return tarea;
+  }
 
   // ✍️ C4 (bloque C) ────────────────────────────────────────────────────────────
   // toJSON(): { version, limiteEnCurso, columnas: { "Por hacer": [datos…], … } }
