@@ -24,5 +24,13 @@ export function leerFormulario(form) {
 //   - Si no lo tiene: <p> vacío y SIN aria-invalid (removeAttribute)
 //   Pista: p.dataset.errorDe es el nombre del campo (data-error-de → dataset.errorDe)
 export function mostrarErrores(form, errores) {
-  throw new Error("Sin hacer");
+  const huecos = form.querySelectorAll("[data-error-de]");
+    for (const hueco of huecos) {
+      const nombre_campo = hueco.getAttribute("data-error-de");
+
+      const input = form.querySelector(`[name="${nombre_campo}]`);
+
+      const mensaje = errores[nombre_campo]
+    }
+
 }
