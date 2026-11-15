@@ -23,14 +23,22 @@ export function leerFormulario(form) {
 //     (el control es form.elements[campo])
 //   - Si no lo tiene: <p> vacío y SIN aria-invalid (removeAttribute)
 //   Pista: p.dataset.errorDe es el nombre del campo (data-error-de → dataset.errorDe)
+
+// Recorre los huecos de error del formulario, si ese campo tiene un error, lo muestra
+// y pone el input como valido, si no, lo borra y quita la marca de invalido.
 export function mostrarErrores(form, errores) {
   const huecos = form.querySelectorAll("[data-error-de]");
     for (const hueco of huecos) {
       const nombre_campo = hueco.getAttribute("data-error-de");
-
-      const input = form.querySelector(`[name="${nombre_campo}]`);
-
-      const mensaje = errores[nombre_campo]
+      const input = form.querySelector(`[name="${nombre_campo}"]`);
+      const mensaje = errores[nombre_campo];
+      if (mensaje !== undefined) {
+        hueco.textContent = mensaje;
+        input.setAttribute("aria-invalid", "true");
+      } else {
+        hueco.textContent = "";
+        input.removeAttribute("aria-invalid");
+      }
     }
 
 }
