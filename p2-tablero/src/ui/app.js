@@ -43,7 +43,18 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   //   - [data-dato="vencidas"]: las vencidas de tablero.resumen(ahora)
   //   La fecha de hoy: const ahora = hoy ?? new Date();  (los tests pasan una fija)
   function pintar() {
-    throw new Error("Sin hacer");
+    const ahora = hoy ?? new Date();
+    const pintColumnas = columnas.querySelector("[data-columna")
+
+    for (pintColumna of pintColumnas) {
+      const columna = tablero.columna(pintColumna.dataset.columna)
+      const lista = caja.querySelector(".lista");
+      pintarLista(lista, columna.ordenadas(), ahora);
+      for (tarjeta of pintColumnas) {
+      
+
+      }
+    }
   }
 
   // 👀 Resuelto: avisar("texto") enseña el aviso; avisar("") lo esconde
