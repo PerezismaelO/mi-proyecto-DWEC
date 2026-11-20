@@ -43,7 +43,38 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   //   - [data-dato="vencidas"]: las vencidas de tablero.resumen(ahora)
   //   La fecha de hoy: const ahora = hoy ?? new Date();  (los tests pasan una fija)
   function pintar() {
-    throw new Error("Sin hacer");
+    const ahora = hoy ?? new Date();
+
+    for (const columna of tablero.columnas) {
+      const caja = columnas.querySelector(`[data-columna="${columna.nombre}"]`);
+      const tareas = columna.ordenadas();
+
+      // Las tarjetas de la columna (pintarLista ya vacía antes de pintar)
+      pintarLista(caja.querySelector(".lista"), tareas, ahora);
+
+      // Los botones de cada tarjeta, según la columna en la que está
+      for (const tarjeta of caja.querySelectorAll(".tarjeta")) {
+        for (const [texto, accion] of ACCIONES[columna.nombre]) {
+          const boton = document.createElement("button");
+          boton.type = "button";
+          boton.dataset.accion = accion;
+          boton.textContent = texto;
+          tarjeta.append(boton);
+        }
+      }
+
+      // El contador: (n), o (n/límite) si la columna tiene límite WIP
+      const n = tareas.length;
+      caja.querySelector(".contador").textContent =
+        columna.limiteWip === null ? `(${n})` : `(${n}/${columna.limiteWip})`;
+    }
+
+    // El resumen: progreso en % y cuántas están vencidas
+    const { porHacer, enCurso, hecho, vencidas } = tablero.resumen(ahora);
+    const total = porHacer + enCurso + hecho;
+    const progreso = total === 0 ? 0 : Math.round((hecho / total) * 100);
+    resumen.querySelector('[data-dato="progreso"]').textContent = `${progreso} %`;
+    resumen.querySelector('[data-dato="vencidas"]').textContent = String(vencidas);
   }
 
   // 👀 Resuelto: avisar("texto") enseña el aviso; avisar("") lo esconde
@@ -66,4 +97,4 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   return { pintar };
 }
 
-(void ACCIONES, ErrorTablero, delegar, leerFormulario, mostrarErrores, pintarLista); // (borra esta línea cuando los uses)
+(void ErrorTablero, delegar, leerFormulario, mostrarErrores); // (borra esta línea cuando los uses)
