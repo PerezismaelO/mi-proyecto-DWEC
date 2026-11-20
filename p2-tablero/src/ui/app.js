@@ -104,6 +104,34 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   //   Cualquier otro error → se relanza (es un fallo del programa).
   //   Pista: una función cambiar(accion) con el try/catch te sirve también para el B6.
 
+  function cambiar(accion) {
+    try {
+      accion();
+    } catch (error) {
+      if (error instanceof ErrorTablero) {
+        avisar(error.message);
+        return;
+      }
+      throw error; // otro error: fallo del programa
+    }
+    avisar("");
+    pintar();
+    alCambiar(tablero);
+  }
+
+  // listener
+  delegar(columnas, "click", "button[data-accion]", function (boton) {
+    const id = Number(boton.closest(".tarjeta").dataset.id);
+    const accion = boton.dataset.accion;
+
+    if (accion === "empezar") {
+      cambiar(() => tablero.mover(id, "En curso"));
+    } else if (accion === "volver") {
+      cambiar(() => tablero.mover(id, "Por hacer"));
+    } else if (accion === "completar") {
+      cambiar(() => tablero.completar(id));
+    }
+  });
  
   // ✍️ B6 · submit de `form`: preventDefault, leerFormulario, validar y mostrarErrores. Si hay errores,
   //   no se crea nada. Si no, tablero.crearTarea(datos) (como un cambio más) y form.reset().
