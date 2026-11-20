@@ -21,9 +21,24 @@ const ACCIONES = {
 //   - cadaDias (si viene): entero mayor que 0. Si es correcto pero no hay limite, el error va
 //     en «limite»: una tarea que se repite necesita fecha límite
 export function validar(datos) {
-  throw new Error("Sin hacer");
-}
+  const errores = {};
 
+  if (datos.titulo === "") {
+    errores.titulo = "Escribe un título";
+  } else if (datos.titulo.length > 80) {
+    errores.titulo = "El título no puede pasar de 80 caracteres";
+  }
+
+  if (datos.cadaDias !== undefined) {
+    if (!Number.isInteger(datos.cadaDias) || datos.cadaDias < 1) {
+      errores.cadaDias = "Tiene que ser un número entero mayor que 0";
+    } else if (datos.limite === null) {
+      errores.limite = "Una tarea que se repite necesita fecha límite";
+    }
+  }
+
+  return errores;
+}
 /**
  * Arranca la interfaz dentro de raiz (el <main id="app">). Los listeners se ponen UNA vez aquí;
  * pintar() solo cambia nodos, así que repintar no los duplica.
@@ -63,7 +78,6 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
         }
       }
 
-      // El contador: (n), o (n/límite) si la columna tiene límite WIP
       const n = tareas.length;
       caja.querySelector(".contador").textContent =
         columna.limiteWip === null ? `(${n})` : `(${n}/${columna.limiteWip})`;
@@ -90,8 +104,24 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   //   Cualquier otro error → se relanza (es un fallo del programa).
   //   Pista: una función cambiar(accion) con el try/catch te sirve también para el B6.
 
+ 
   // ✍️ B6 · submit de `form`: preventDefault, leerFormulario, validar y mostrarErrores. Si hay errores,
   //   no se crea nada. Si no, tablero.crearTarea(datos) (como un cambio más) y form.reset().
+    form.addEventListener("submit", function (evento) {
+    evento.preventDefault(); // que no recargue la página
+
+    const datos = leerFormulario(form);
+    const errores = validar(datos);
+    mostrarErrores(form, errores);
+
+    // Si hay algún error, no se crea nada
+    if (Object.keys(errores).length > 0) {
+      return;
+    }
+
+    cambiar(() => tablero.crearTarea(datos));
+    form.reset();
+  });
 
   pintar();
   return { pintar };
