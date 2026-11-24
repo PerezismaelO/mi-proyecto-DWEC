@@ -7,8 +7,8 @@ import { Tarea } from "./Tarea.js";
 export class TareaRecurrente extends Tarea {
   // new TareaRecurrente("Sacar la basura", "media", "2026-10-23", 7): lo mismo que una Tarea + cadaDias
   // (Bloque C · ✍️ C3: añadirás un quinto parámetro, id = null, y se lo pasarás también al super)
-  constructor(titulo, prioridad, limite, cadaDias) {
-    super(titulo, prioridad, limite, cadaDias); 
+  constructor(titulo, prioridad, limite, cadaDias, id = null) {
+    super(titulo, prioridad, limite, id); 
     // 2 · Llama al constructor del padre (super) con lo que es de Tarea, ANTES de usar this.
     if (!Number.isInteger(cadaDias) || cadaDias < 1) {
       throw new RangeError("cadaDias debe ser un numero entero mayor o igual a 1")
