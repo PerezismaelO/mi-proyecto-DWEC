@@ -7,6 +7,21 @@
 //     (Vite devuelve su index.html, con un 200, cuando el fichero no existe)
 //   - Si todo va bien, devuelve respuesta.json()
 //   - Los errores de red (sin conexión) NO se capturan aquí: que le lleguen a quien llama
+
 export async function obtenerJSON(url, fetchFn = fetch) {
-  throw new Error("Sin hacer");
+  // Pedimos la url y esperamos la respuesta
+  const respuesta = await fetchFn(url);
+
+  if (!respuesta.ok) {
+    throw new Error(`Error ${respuesta.status} al pedir ${url}`);
+  }
+
+  // Ha contestado, pero no con un JSON
+  const tipo = respuesta.headers.get("content-type") ?? "";
+  if (!tipo.includes("application/json")) {
+    throw new Error(`${url} no es un JSON`);
+  }
+
+  // devolvemos el JSON convertido
+  return respuesta.json();
 }
