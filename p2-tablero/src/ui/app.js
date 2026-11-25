@@ -162,3 +162,31 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
 }
 
 (void ErrorTablero, delegar, leerFormulario, mostrarErrores); // (borra esta línea cuando los uses)
+
+
+
+
+
+
+
+// Notas para la defensa
+
+// Listener
+// al pulsar un boton
+// delegar tiene un solo listener en columnas
+// closest sube hasta el boton y el manejador saca el id y la accion
+// el manejador llama a cambiar y cambiar le pide el cambio al tablero
+// si sale bien repinta y guarda
+// si es un error del tablero enseña el aviso
+
+// Polimorfismo
+// esta en completar de tablero
+// llama a alcompletar sin mirar el tipo de tarea
+// la normal devuelve una lista vacia
+// la recurrente devuelve una lista con la siguiente
+// asi si hay un tipo nuevo completar no se toca
+
+// Regla nueva
+// va en trasladar de tablero con las otras reglas
+// siempre antes de quitar y añadir para que la tarea no se pierda
+// la pagina no se toca porque cambiar ya enseña el aviso
