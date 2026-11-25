@@ -2,6 +2,7 @@
 import { formatear } from "../modelo/fechas.js";
 
 /** Tarea → <article class="tarjeta tarjeta--alta" data-id="3"> con su título y su límite */
+// crearTarjeta: convierte una tarea en su <article class="tarjeta">
 export function crearTarjeta(tarea, hoy = new Date()) {
   const tarjeta = document.createElement("article");
   tarjeta.classList.add("tarjeta", `tarjeta--${tarea.prioridad}`);
@@ -25,6 +26,7 @@ export function crearTarjeta(tarea, hoy = new Date()) {
 //   - Vacía el contenedor y pone una tarjeta por tarea (usa crearTarjeta), en el mismo orden.
 //   - Pintar dos veces NO puede duplicar: primero vacía. Pista: contenedor.replaceChildren(...)
 //   - Sin tareas: deja SOLO un <p class="vacia">Sin tareas</p>
+// pintarLista: vacía el contenedor y pone una tarjeta por tarea (o «Sin tareas»)
 export function pintarLista(contenedor, tareas, hoy = new Date()) {
   // Primero vaciamos el contenedor para no duplicar
   contenedor.replaceChildren();

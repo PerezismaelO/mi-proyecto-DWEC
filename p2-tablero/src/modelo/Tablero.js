@@ -13,6 +13,7 @@ export class Tablero {
   // Privado: #columnas, un Map nombre → Columna
    #columnas = new Map();
   // ✍️ A3 ──────────────────────────────────────────────────────────────────────
+  // constructor: crea las tres columnas; solo «En curso» lleva límite
   constructor(limiteEnCurso = 3) {
     // Crea las tres columnas; solo «En curso» lleva límite WIP (limiteEnCurso)
     for (const nombre of Tablero.COLUMNAS) { // Recorremos las 3 columnas: por hacer, en curso y hecho. 
@@ -25,6 +26,7 @@ export class Tablero {
   //   (usa crearTarea)
   
   // Crea un tablero y le mete una tarea por cada objeto de datos
+  // desde: crea un tablero con una tarea por cada objeto de datos
   static desde(datos, limiteEnCurso) {
     const tablero = new Tablero(limiteEnCurso);
     for (const dato of datos) {
@@ -37,6 +39,7 @@ export class Tablero {
   // get columnas: array con las tres columnas, en orden
 
   // Devuelve la columna con ese nombre, o lanza un error si no existe
+  // columna: devuelve la columna con ese nombre (error si no existe)
   columna(nombre) {
     const columna = this.#columnas.get(nombre);
     if (columna === undefined) {
@@ -45,6 +48,7 @@ export class Tablero {
     return columna;
   }
   // Las tres columnas en un array (el Map guarda el orden en que se metieron)
+  // columnas: las tres columnas en un array, en orden
   get columnas() {
     return [...this.#columnas.values()];
   }
@@ -54,6 +58,7 @@ export class Tablero {
   //   y pásaselo al constructor, en su orden (new Tarea(datos) NO vale: espera el título)
 
   // Crea la tarea y la mete en "Por hacer"
+  // crearTarea: crea una Tarea o TareaRecurrente y la mete en «Por hacer»
   crearTarea(datos) {
     let tarea;
     if (datos.cadaDias !== undefined) {
@@ -68,6 +73,7 @@ export class Tablero {
   // dondeEsta(id): la Columna donde está, o null
 
   // Busca la tarea en todas las columnas; si no está, devuelve null
+  // buscar: devuelve la tarea con ese id, esté donde esté (o null)
   buscar(id) {
     for (const columna of this.#columnas.values()) {
       const tarea = columna.tareas.find((t) => t.id === id);
@@ -79,6 +85,7 @@ export class Tablero {
   }
 
   // Devuelve la columna donde está la tarea, si no devuelve null
+  // dondeEsta: devuelve la columna donde está la tarea (o null)
   dondeEsta(id) {
     for (const columna of this.#columnas.values()) {
       if (columna.tiene(id)) {
@@ -91,6 +98,7 @@ export class Tablero {
   //   (¡comprueba ANTES de quitarla de su columna, o se perdería!) · la mueve y la devuelve
 
   // Mueve la tarea a otra columna y la devuelve
+  // mover: mueve la tarea a otra columna (usa #trasladar)
   mover(id, destino) {
     return this.#trasladar(id, destino);
   }
@@ -98,6 +106,7 @@ export class Tablero {
   //   ⚠️ Sin preguntar si es recurrente: eso es el polimorfismo
 
   // La pasa a «Hecho» y mete en «Por hacer» lo que devuelva alCompletar().
+  // completar: pasa la tarea a «Hecho» y añade lo que devuelva alCompletar (polimorfismo)
   completar(id) {
     const tarea = this.#trasladar(id, "Hecho");
     for (const nueva of tarea.alCompletar()) {
@@ -131,6 +140,7 @@ export class Tablero {
   //   Pista: mover y completar hacen casi lo mismo. Un método privado #trasladar(id, destino)
   //   con las comprobaciones evita escribirlas dos veces.
 
+    // #trasladar: comprueba las reglas ANTES de tocar y, si todo va bien, mueve la tarea
     #trasladar(id, destino) {
     const columnaDestino = this.columna(destino);
     const columnaOrigen = this.dondeEsta(id);
@@ -157,6 +167,7 @@ export class Tablero {
   //   JSON.stringify(tablero) lo llama solo. Sin él sale "{}": los # no se ven. Usa aDatos.
 
   // Lo que se guarda en JSON: la versión, el límite WIP y las tareas de cada columna
+  // toJSON: lo que se guarda en JSON (versión, límite y tareas de cada columna)
   toJSON() {
     const columnas = {};
     for (const columna of this.columnas) {
@@ -170,6 +181,7 @@ export class Tablero {
   }
 
   /** Lo contrario de toJSON: el MISMO tablero (columnas, ids y límite WIP). Lanza si no encaja. */
+  // desdeJSON: lo contrario de toJSON: rehace el mismo tablero desde los datos
   static desdeJSON(datos) {
     // Tiene que ser un objeto de nuestra versión
     if (datos === null || datos.version !== Tablero.VERSION_DATOS) {

@@ -7,6 +7,7 @@ import { Tarea } from "./Tarea.js";
 export class TareaRecurrente extends Tarea {
   // new TareaRecurrente("Sacar la basura", "media", "2026-10-23", 7): lo mismo que una Tarea + cadaDias
   // (Bloque C · ✍️ C3: añadirás un quinto parámetro, id = null, y se lo pasarás también al super)
+  // constructor: crea una Tarea normal (super) y le añade cadaDias
   constructor(titulo, prioridad, limite, cadaDias, id = null) {
     super(titulo, prioridad, limite, id); 
     // 2 · Llama al constructor del padre (super) con lo que es de Tarea, ANTES de usar this.
@@ -15,7 +16,7 @@ export class TareaRecurrente extends Tarea {
     }
     // 3 · cadaDias tiene que ser un entero ≥ 1 → si no, RangeError.
     //     Pista: Number.isInteger
-    if (this.limite == null) {
+    if (this.limite === null) {
       throw new TypeError("Una tarea recurrente debe tener un límite")
     }
     // 4 · Una recurrente sin límite no tiene sentido → si this.limite es null, TypeError.
@@ -27,6 +28,7 @@ export class TareaRecurrente extends Tarea {
   //     y el límite cadaDias días después. ⚠️ Sin tocar this.limite: copia la fecha primero.
   //     Pista: const limite = new Date(this.limite); limite.setDate(limite.getDate() + …)
 
+  // siguiente: crea la misma tarea con la fecha límite cadaDias días después
   siguiente() {
     // Copia de la fecha limite
     const limite = new Date(this.limite);
@@ -38,11 +40,13 @@ export class TareaRecurrente extends Tarea {
 
   // 7 · Sobrescribe alCompletar(): en vez de [], devuelve [la siguiente].
 
+  // alCompletar: al completarla devuelve [la siguiente] (polimorfismo)
   alCompletar() {
     return [this.siguiente()];
   }
 
   // 8 · Sobrescribe toString(): lo del padre + " · 🔁 cada N días".
+  // toString: el texto de la tarea + «cada N días»
   toString() {
     return `${super.toString()} · 🔁 cada ${this.cadaDias} días`;
   }

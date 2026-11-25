@@ -8,6 +8,7 @@
 //   - Si todo va bien, devuelve respuesta.json()
 //   - Los errores de red (sin conexión) NO se capturan aquí: que le lleguen a quien llama
 
+// obtenerJSON: pide la url con fetch y devuelve el JSON (error si falla o no es JSON)
 export async function obtenerJSON(url, fetchFn = fetch) {
   // Pedimos la url y esperamos la respuesta
   const respuesta = await fetchFn(url);

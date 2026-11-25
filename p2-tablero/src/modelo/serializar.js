@@ -7,12 +7,14 @@ const dos = (n) => String(n).padStart(2, "0");
 
 /** Date → "AAAA-MM-DD" en hora LOCAL (toISOString usa UTC y en España puede dar el día anterior) */
 // 👀 Resuelto
+// fechaATexto: fecha → "AAAA-MM-DD" en hora local
 export function fechaATexto(fecha) {
   return `${fecha.getFullYear()}-${dos(fecha.getMonth() + 1)}-${dos(fecha.getDate())}`;
 }
 
 // 👀 Resuelto
 /** Tarea → objeto plano que JSON entiende. Las recurrentes llevan además cadaDias. */
+// aDatos: Tarea → objeto plano para guardarlo en JSON
 export function aDatos(tarea) {
   const datos = {
     id: tarea.id,
@@ -28,6 +30,7 @@ export function aDatos(tarea) {
 //   (cada campo a su sitio en el constructor, también el id)
 
 // Si tiene cadaDias, es una TareaRecurrente, si no, es una tarea
+// desdeDatos: objeto plano → Tarea (o TareaRecurrente si trae cadaDias)
 export function desdeDatos(datos) {
   if (datos.cadaDias !== undefined) {
     return new TareaRecurrente(datos.titulo, datos.prioridad, datos.limite, datos.cadaDias, datos.id);

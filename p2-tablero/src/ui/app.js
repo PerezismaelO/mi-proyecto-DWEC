@@ -20,6 +20,7 @@ const ACCIONES = {
 //   - titulo: obligatorio y como mucho 80 caracteres
 //   - cadaDias (si viene): entero mayor que 0. Si es correcto pero no hay limite, el error va
 //     en «limite»: una tarea que se repite necesita fecha límite
+// validar: comprueba los datos del formulario y devuelve los errores ({} si todo está bien)
 export function validar(datos) {
   const errores = {};
 
@@ -44,6 +45,7 @@ export function validar(datos) {
  * pintar() solo cambia nodos, así que repintar no los duplica.
  * opciones.hoy: fecha fija para los tests · opciones.alCambiar(tablero): tras cada cambio (UD6)
  */
+// iniciarApp: arranca la página: pinta el tablero y pone los listeners una sola vez
 export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } = {}) {
   const form = raiz.querySelector("#form-alta");
   const aviso = raiz.querySelector("#aviso");
@@ -57,6 +59,7 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   //   - [data-dato="progreso"]: hechas ÷ total en %, redondeado (con el tablero vacío, 0 %)
   //   - [data-dato="vencidas"]: las vencidas de tablero.resumen(ahora)
   //   La fecha de hoy: const ahora = hoy ?? new Date();  (los tests pasan una fija)
+  // pintar: deja la página igual que el tablero (tarjetas, botones, contadores y resumen)
   function pintar() {
     const ahora = hoy ?? new Date();
 
@@ -92,6 +95,7 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   }
 
   // 👀 Resuelto: avisar("texto") enseña el aviso; avisar("") lo esconde
+  // avisar: enseña un mensaje en el aviso, o lo esconde si el mensaje está vacío
   function avisar(mensaje) {
     aviso.textContent = mensaje;
     aviso.hidden = mensaje === "";
@@ -104,6 +108,7 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   //   Cualquier otro error → se relanza (es un fallo del programa).
   //   Pista: una función cambiar(accion) con el try/catch te sirve también para el B6.
 
+  // cambiar: hace un cambio en el tablero; si sale bien repinta y guarda, si falla enseña el aviso
   function cambiar(accion) {
     try {
       accion();
@@ -119,7 +124,7 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
     alCambiar(tablero);
   }
 
-  // listener
+  // Listener de los botones: según el botón pulsado, mueve o completa la tarea con cambiar
   delegar(columnas, "click", "button[data-accion]", function (boton) {
     const id = Number(boton.closest(".tarjeta").dataset.id);
     const accion = boton.dataset.accion;
@@ -135,6 +140,7 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
  
   // ✍️ B6 · submit de `form`: preventDefault, leerFormulario, validar y mostrarErrores. Si hay errores,
   //   no se crea nada. Si no, tablero.crearTarea(datos) (como un cambio más) y form.reset().
+    // Listener del formulario: valida los datos y, si están bien, crea la tarea
     form.addEventListener("submit", function (evento) {
     evento.preventDefault(); // que no recargue la página
 
