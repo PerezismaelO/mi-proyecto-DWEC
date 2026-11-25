@@ -157,10 +157,18 @@ export class Tablero {
   //   JSON.stringify(tablero) lo llama solo. Sin él sale "{}": los # no se ven. Usa aDatos.
 
   /** Lo contrario de toJSON: el MISMO tablero (columnas, ids y límite WIP). Lanza si no encaja. */
-  static desdeJSON(datos) {
-    throw new Error("Sin hacer");
+  // Lo que se guarda en JSON: la versión, el límite WIP y las tareas de cada columna
+  toJSON() {
+    const columnas = {};
+    for (const columna of this.columnas) {
+      columnas[columna.nombre] = columna.tareas.map((tarea) => aDatos(tarea));
+    }
+    return {
+      version: Tablero.VERSION_DATOS,
+      limiteEnCurso: this.columna("En curso").limiteWip,
+      columnas: columnas,
+    };
   }
-}
 
 // Comprueba con:  docker compose run --rm web npm test bloque-a
 (void Columna,
