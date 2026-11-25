@@ -5,7 +5,7 @@
 // ErrorTablero extends Error
 //   - constructor(mensaje): llama al padre con el mensaje
 //   - name = el nombre de la clase. Pista: this.constructor.name también vale en las subclases.
-// ErrorTablero: padre de los errores esperados del tablero
+// errortablero es el padre de los errores esperados del tablero
 export class ErrorTablero extends Error {
   constructor(mensaje) {
     super(mensaje); // el mensaje lo guarda Error (en this.message)
@@ -18,7 +18,7 @@ export class ErrorTablero extends Error {
 //   - guarda this.columna (el NOMBRE, un string) y this.limite
 
 // La columna destino está llena
-// ColumnaLlenaError: la columna destino está llena
+// columnallenaerror se lanza cuando la columna destino está llena
 export class ColumnaLlenaError extends ErrorTablero {
   constructor(columna) {
     super(`«${columna.nombre}» está llena (máximo ${columna.limiteWip})`);
@@ -32,7 +32,7 @@ export class ColumnaLlenaError extends ErrorTablero {
 //   - mensaje con el id de la tarea; guarda this.desde y this.hasta
 
 // Movimiento prohibido (sacar de «Hecho» o mover a la misma columna)
-// MovimientoNoPermitidoError: movimiento prohibido (salir de Hecho o a la misma columna)
+// movimientonopermitidoerror se lanza cuando el movimiento está prohibido
 export class MovimientoNoPermitidoError extends ErrorTablero {
   constructor(id, desde, hasta) {
     super(`No se puede mover la tarea ${id} de «${desde}» a «${hasta}»`);

@@ -17,7 +17,7 @@ export class Tarea {
   // new Tarea("Preparar la demo", "alta", "2026-11-05") · new Tarea("Escribir el README")
   // Los parámetros con = tienen valor por defecto: si no los pasas, prioridad "media" y sin límite.
   // (Bloque C · ✍️ C3: aquí añadirás un cuarto parámetro, el id, para recuperar las tareas guardadas)
-  // constructor: crea la tarea con su id, título, prioridad y fecha límite
+  // constructor crea la tarea con su id título prioridad y fecha límite
   constructor(titulo, prioridad = "media", limite = null, id = null) {
     if (id === null) {
       this.id = Tarea.#siguienteId++;
@@ -36,12 +36,12 @@ export class Tarea {
     this.creada = new Date();
   }
 
-  // titulo (get): devuelve el título
+  // titulo devuelve el título
   get titulo() {
     return this.#titulo;
   }
 
-  // titulo (set): valida y guarda el título
+  // titulo valida y guarda el título
   set titulo(valor) {
     if (typeof valor !== "string" || valor.trim() === "")
       throw new TypeError("La tarea necesita un título");
@@ -49,24 +49,24 @@ export class Tarea {
     this.#titulo = valor.trim();
   }
 
-  // prioridad (get): devuelve la prioridad
+  // prioridad devuelve la prioridad
   get prioridad() {
     return this.#prioridad;
   }
 
-  // prioridad (set): valida y guarda la prioridad
+  // prioridad valida y guarda la prioridad
   set prioridad(valor) {
     if (!Tarea.PRIORIDADES.includes(valor)) throw new RangeError(`Prioridad desconocida: ${valor}`);
     this.#prioridad = valor;
   }
 
   /** 0 = baja, 1 = media, 2 = alta (para ordenar) */
-  // peso: la prioridad como número (0 baja, 1 media, 2 alta) para ordenar
+  // peso devuelve la prioridad como número para poder ordenar
   get peso() {
     return Tarea.PRIORIDADES.indexOf(this.#prioridad);
   }
 
-  // bajarPrioridad: baja un nivel la prioridad (false si ya es baja)
+  // bajarprioridad baja un nivel la prioridad si se puede
   bajarPrioridad() {
     if (this.peso === 0) return false; // ya es la más baja: no hace nada
     this.#prioridad = Tarea.PRIORIDADES[this.peso - 1];
@@ -74,18 +74,18 @@ export class Tarea {
   }
 
   /** ¿Se ha pasado la fecha límite? `hoy` se puede pasar para probar (por defecto, hoy) */
-  // estaVencida: true si ya ha pasado la fecha límite
+  // estavencida dice si ya ha pasado la fecha límite
   estaVencida(hoy = new Date()) {
     return this.limite !== null && this.limite < soloDia(hoy);
   }
 
   /** Lo que pasa al completarla. Una tarea normal no genera nada más. */
-  // alCompletar: una tarea normal no genera nada al completarse: []
+  // alcompletar una tarea normal no genera nada al completarse
   alCompletar() {
     return [];
   }
 
-  // toString: la tarea en texto: #id [prioridad] título · límite
+  // tostring devuelve la tarea en texto
   toString() {
     const limite = this.limite ? ` · límite ${formatear(this.limite)}` : "";
     return `#${this.id} [${this.#prioridad}] ${this.#titulo}${limite}`;

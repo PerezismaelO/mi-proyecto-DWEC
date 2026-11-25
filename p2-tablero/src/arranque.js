@@ -3,7 +3,7 @@ import { arrancar, guardarTablero } from "./datos/persistencia.js";
 import { iniciarApp } from "./ui/app.js";
 
 /** Enseña «Cargando…», arranca el tablero, avisa si algo falló y guarda tras cada cambio */
-// iniciar: carga el tablero, arranca la página y la guarda tras cada cambio
+// iniciar carga el tablero arranca la página y lo guarda tras cada cambio
 export async function iniciar(raiz, { storage = localStorage, hoy = null, ...opciones } = {}) {
   const estado = raiz.querySelector("#estado");
   estado.textContent = "Cargando tareas…";

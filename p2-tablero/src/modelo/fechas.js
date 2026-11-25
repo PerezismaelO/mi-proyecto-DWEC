@@ -5,7 +5,7 @@
  * ⚠️ new Date("2026-10-23") la interpreta en UTC: en España sería el 23 a las 02:00 (o el 22 en
  * otros husos). Por eso se parte a mano.
  */
-// parsearFecha: convierte "AAAA-MM-DD" en una fecha en hora local
+// parsearfecha convierte un texto de fecha en una fecha en hora local
 export function parsearFecha(texto) {
   if (texto instanceof Date)
     return new Date(texto.getFullYear(), texto.getMonth(), texto.getDate());
@@ -17,10 +17,10 @@ export function parsearFecha(texto) {
 }
 
 /** La fecha a las 00:00 (para comparar días sin que estorben las horas) */
-// soloDia: la misma fecha a las 00:00
+// solodia devuelve la misma fecha a medianoche
 export const soloDia = (fecha) => new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
 
 /** Date → "23/10/2026" */
-// formatear: fecha → "23/10/2026"
+// formatear convierte una fecha en texto día mes año
 export const formatear = (fecha) =>
   fecha.toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" });

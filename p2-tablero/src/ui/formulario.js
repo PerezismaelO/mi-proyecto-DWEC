@@ -6,7 +6,7 @@
  * { titulo, prioridad, limite, cadaDias }. Texto sin espacios de más, limite "AAAA-MM-DD" o null,
  * cadaDias un número o undefined (si está vacío).
  */
-// leerFormulario: lee el formulario y devuelve los datos limpios para crear una tarea
+// leerformulario lee el formulario y devuelve los datos limpios para crear una tarea
 export function leerFormulario(form) {
   const campos = Object.fromEntries(new FormData(form));
   const datos = {
@@ -27,7 +27,7 @@ export function leerFormulario(form) {
 
 // Recorre los huecos de error del formulario, si ese campo tiene un error, lo muestra
 // y pone el input como valido, si no, lo borra y quita la marca de invalido.
-// mostrarErrores: escribe cada error debajo de su campo y lo marca con aria-invalid
+// mostrarerrores escribe cada error debajo de su campo y lo marca como inválido
 export function mostrarErrores(form, errores) {
   const huecos = form.querySelectorAll("[data-error-de]");
     for (const hueco of huecos) {

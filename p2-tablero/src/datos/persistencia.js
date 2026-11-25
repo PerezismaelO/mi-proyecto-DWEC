@@ -7,7 +7,7 @@ import { obtenerJSON } from "./red.js";
 export const CLAVE = "dwec-p2-tablero";
 
 // ✍️ C5 · guardarTablero(tablero, storage = localStorage): guarda el tablero en CLAVE
-// guardarTablero: guarda el tablero en localStorage
+// guardartablero guarda el tablero en localstorage
 export function guardarTablero(tablero, storage = localStorage) {
   // guardar hace JSON.stringify, y JSON.stringify llama solo a tablero.toJSON()
   guardar(CLAVE, tablero, storage);
@@ -16,7 +16,7 @@ export function guardarTablero(tablero, storage = localStorage) {
 // ✍️ C6 · async arrancar({ storage = localStorage, fetchFn = fetch, url = "/tareas-iniciales.json",
 //                  limiteEnCurso = 3 } = {}) → { tablero, origen, error? }
 //   Los tres casos («guardado», «inicial» y «vacio») están en el enunciado (bloque C).
-// arrancar: recupera lo guardado, si no descarga las iniciales, y si falla un tablero vacío
+// arrancar recupera lo guardado o descarga las iniciales o empieza con un tablero vacío
 export async function arrancar({
   storage = localStorage,
   fetchFn = fetch,
