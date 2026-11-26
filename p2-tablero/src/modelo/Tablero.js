@@ -199,5 +199,4 @@ export class Tablero {
     const tarea = this.buscar(id);
     tarea.comprobarPaso(origen.nombre, destino);
   }
-
-// Comprueba con:  docker compose run --rm web npm test bloque-a
+}

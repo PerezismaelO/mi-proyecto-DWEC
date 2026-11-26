@@ -64,6 +64,9 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   function pintar() {
     const ahora = hoy ?? new Date();
 
+    if (columna.nombre === "Por hacer" && tablero.buscar(Number(tarjeta.dataset.id)).limite)
+      tarjeta.append(crearBoton("Posponer y empezar", "posponer"));
+
     for (const columna of tablero.columnas) {
       const caja = columnas.querySelector(`[data-columna="${columna.nombre}"]`);
       const tareas = columna.ordenadas();
@@ -137,6 +140,13 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
     } else if (accion === "completar") {
       cambiar(() => tablero.completar(id));
     }
+
+    if (accion === "posponer") {
+      columnas.querySelector("form")?.remove()
+      tarjeta.append(crearFormulario(tarea))
+      return;
+    }
+    if (accion === "cancelar") return columnas.querySelector("form")?.remove();
   });
  
   // ✍️ B6 · submit de `form`: preventDefault, leerFormulario, validar y mostrarErrores. Si hay errores,
@@ -163,7 +173,48 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   return { pintar };
 }
 
-(void ErrorTablero, delegar, leerFormulario, mostrarErrores); // (borra esta línea cuando los uses)
+const crear = (etiqueta, datos) => Object.assign(document.createElement(etiqueta), datos);
+
+function crearFormulario(tarea) {
+  const form = crear("form", { noValidate: true });
+  form.dataset.form = "posponer";
+  const etiqueta = crear("label", { textContent: `Días que se pospone «${tarea.titulo}»` });
+  etiqueta.append(crear("input", { name: "dias", type: "number", value: 1 }));
+  const error = crear("p", { className: "error" });
+  error.dataset.errorDe = "dias";
+  const enviar = crear("button", { type: "submit", textContent: "Guardar" });
+  form.append(etiqueta, error, enviar, crearBoton("Cancelar", "cancelar"));
+  return form;
+}
+
+delegar(columnas, "submit", "form", (formulario, evento) => {
+  evento.preventDefault();                                 
+  const tarea = tablero.buscar(Number(formulario.closest(".tarjeta").dataset.id));
+  const valor = formulario.elements.dias.value.trim(); 
+  const mensaje = revisar(valor, tarea, tablero, hoy ?? new Date());
+  mostrarErrores(formulario, { dias: mensaje });
+  if (mensaje === "") cambiar(() => aplicar(tablero, tarea, valor));
+});
+
+
+// Devuelve el mensaje de error, o "" si está bien
+function revisar(valor, tarea, tablero, hoy) {
+  if (valor > 30 || valor < 1) {
+    throw new Error("Escribe un número entero de 1 a 30")
+  }
+  if (valor < hoy) {
+    throw new Error("Con esos días seguiría vencida")
+  }
+  if (ErrorTablero) {
+    return avisar("«En curso» está llena")
+  }
+  return "";
+}
+
+function aplicar(tablero, tarea, valor) {
+  tablero.mover(tarea.id, "En curso");   // PRIMERO mover: si «En curso» está llena, lanza y no se ha tocado nada
+  
+}
 
 
 
