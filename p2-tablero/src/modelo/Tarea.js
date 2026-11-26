@@ -17,6 +17,7 @@ export class Tarea {
   // new Tarea("Preparar la demo", "alta", "2026-11-05") · new Tarea("Escribir el README")
   // Los parámetros con = tienen valor por defecto: si no los pasas, prioridad "media" y sin límite.
   // (Bloque C · ✍️ C3: aquí añadirás un cuarto parámetro, el id, para recuperar las tareas guardadas)
+
   // constructor crea la tarea con su id título prioridad y fecha límite
   constructor(titulo, prioridad = "media", limite = null, id = null) {
     if (id === null) {
@@ -30,7 +31,7 @@ export class Tarea {
         Tarea.#siguienteId = id + 1;
       }
     }
-    this.titulo = titulo; // pasa por el setter: se valida también al crear
+    this.titulo = titulo;
     this.prioridad = prioridad;
     this.limite = limite === null ? null : parsearFecha(limite);
     this.creada = new Date();
@@ -60,32 +61,29 @@ export class Tarea {
     this.#prioridad = valor;
   }
 
-  /** 0 = baja, 1 = media, 2 = alta (para ordenar) */
   // peso devuelve la prioridad como número para poder ordenar
   get peso() {
     return Tarea.PRIORIDADES.indexOf(this.#prioridad);
   }
 
-  // bajarprioridad baja un nivel la prioridad si se puede
+  // bajarPrioridad baja un nivel la prioridad si se puede
   bajarPrioridad() {
-    if (this.peso === 0) return false; // ya es la más baja: no hace nada
+    if (this.peso === 0) return false;
     this.#prioridad = Tarea.PRIORIDADES[this.peso - 1];
     return true;
   }
 
-  /** ¿Se ha pasado la fecha límite? `hoy` se puede pasar para probar (por defecto, hoy) */
-  // estavencida dice si ya ha pasado la fecha límite
+  // dice si ya ha pasado la fecha límite
   estaVencida(hoy = new Date()) {
     return this.limite !== null && this.limite < soloDia(hoy);
   }
 
-  /** Lo que pasa al completarla. Una tarea normal no genera nada más. */
-  // alcompletar una tarea normal no genera nada al completarse
+  // al completar una tarea normal no genera nada al completarse
   alCompletar() {
     return [];
   }
 
-  // tostring devuelve la tarea en texto
+  // devuelve la tarea en texto
   toString() {
     const limite = this.limite ? ` · límite ${formatear(this.limite)}` : "";
     return `#${this.id} [${this.#prioridad}] ${this.#titulo}${limite}`;

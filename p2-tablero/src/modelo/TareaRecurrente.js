@@ -7,21 +7,18 @@ import { Tarea } from "./Tarea.js";
 export class TareaRecurrente extends Tarea {
   // new TareaRecurrente("Sacar la basura", "media", "2026-10-23", 7): lo mismo que una Tarea + cadaDias
   // (Bloque C · ✍️ C3: añadirás un quinto parámetro, id = null, y se lo pasarás también al super)
+
   // constructor crea una tarea normal con super y le añade cada cuántos días se repite
   constructor(titulo, prioridad, limite, cadaDias, id = null) {
     super(titulo, prioridad, limite, id); 
-    // 2 · Llama al constructor del padre (super) con lo que es de Tarea, ANTES de usar this.
+    // Llama al constructor del padre (super) con lo que es de Tarea, ANTES de usar this.
     if (!Number.isInteger(cadaDias) || cadaDias < 1) {
       throw new RangeError("cadaDias debe ser un numero entero mayor o igual a 1")
     }
-    // 3 · cadaDias tiene que ser un entero ≥ 1 → si no, RangeError.
-    //     Pista: Number.isInteger
     if (this.limite === null) {
       throw new TypeError("Una tarea recurrente debe tener un límite")
     }
-    // 4 · Una recurrente sin límite no tiene sentido → si this.limite es null, TypeError.
     this.cadaDias = cadaDias;
-    // 5 · Guarda this.cadaDias.
   }
 
    // 6 · siguiente(): devuelve una TareaRecurrente NUEVA con el mismo título, prioridad y cadaDias,
@@ -38,19 +35,15 @@ export class TareaRecurrente extends Tarea {
     return new TareaRecurrente(this.titulo, this.prioridad, limite, this.cadaDias);
   }
 
-  // 7 · Sobrescribe alCompletar(): en vez de [], devuelve [la siguiente].
-
-  // alcompletar al completarla devuelve una lista con la siguiente tarea
+  // al completarla devuelve una lista con la siguiente tarea
   alCompletar() {
     return [this.siguiente()];
   }
 
-  // 8 · Sobrescribe toString(): lo del padre + " · 🔁 cada N días".
-  // tostring devuelve el texto de la tarea y cada cuántos días se repite
+  // devuelve el texto de la tarea y cada cuántos días se repite
   toString() {
-    return `${super.toString()} · 🔁 cada ${this.cadaDias} días`;
+    return `${super.toString()} cada ${this.cadaDias} días`;
   }
 }
-
 // Comprueba con:  docker compose run --rm web npm test 2-recurrente
 

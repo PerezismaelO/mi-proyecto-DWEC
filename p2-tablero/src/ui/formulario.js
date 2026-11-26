@@ -1,12 +1,8 @@
 // formulario.js — Bloque B · 👀 leerFormulario (RESUELTO) y ✍️ B2 (mostrarErrores).
 
 // 👀 Resuelto. Del formulario TODO llega como texto: aquí se limpia y se convierte.
-/**
- * Lee el formulario de alta y devuelve los datos LIMPIOS para el modelo:
- * { titulo, prioridad, limite, cadaDias }. Texto sin espacios de más, limite "AAAA-MM-DD" o null,
- * cadaDias un número o undefined (si está vacío).
- */
-// leerformulario lee el formulario y devuelve los datos limpios para crear una tarea
+
+// leerFormulario lee el formulario y devuelve los datos limpios para crear una tarea
 export function leerFormulario(form) {
   const campos = Object.fromEntries(new FormData(form));
   const datos = {
@@ -25,9 +21,7 @@ export function leerFormulario(form) {
 //   - Si no lo tiene: <p> vacío y SIN aria-invalid (removeAttribute)
 //   Pista: p.dataset.errorDe es el nombre del campo (data-error-de → dataset.errorDe)
 
-// Recorre los huecos de error del formulario, si ese campo tiene un error, lo muestra
-// y pone el input como valido, si no, lo borra y quita la marca de invalido.
-// mostrarerrores escribe cada error debajo de su campo y lo marca como inválido
+// escribe cada error debajo de su campo y lo marca como inválido
 export function mostrarErrores(form, errores) {
   const huecos = form.querySelectorAll("[data-error-de]");
     for (const hueco of huecos) {

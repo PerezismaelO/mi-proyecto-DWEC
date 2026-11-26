@@ -30,7 +30,6 @@ export function aDatos(tarea) {
 //   (cada campo a su sitio en el constructor, también el id)
 
 // Si tiene cadaDias, es una TareaRecurrente, si no, es una tarea
-// desdedatos convierte un objeto plano en una tarea o en una tarea recurrente
 export function desdeDatos(datos) {
   if (datos.cadaDias !== undefined) {
     return new TareaRecurrente(datos.titulo, datos.prioridad, datos.limite, datos.cadaDias, datos.id);

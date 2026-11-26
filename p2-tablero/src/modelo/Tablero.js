@@ -13,6 +13,7 @@ export class Tablero {
   // Privado: #columnas, un Map nombre → Columna
    #columnas = new Map();
   // ✍️ A3 ──────────────────────────────────────────────────────────────────────
+
   // constructor crea las tres columnas y solo en curso lleva límite
   constructor(limiteEnCurso = 3) {
     // Crea las tres columnas; solo «En curso» lleva límite WIP (limiteEnCurso)
@@ -22,9 +23,6 @@ export class Tablero {
     }
   }
 
-  // static desde(datos, limiteEnCurso): un Tablero con una tarea por cada objeto de datos
-  //   (usa crearTarea)
-  
   // Crea un tablero y le mete una tarea por cada objeto de datos
   // desde crea un tablero con una tarea por cada objeto de datos
   static desde(datos, limiteEnCurso) {
@@ -57,8 +55,7 @@ export class Tablero {
   //   y la devuelve. datos es un objeto { titulo, prioridad, limite, cadaDias }: saca cada campo
   //   y pásaselo al constructor, en su orden (new Tarea(datos) NO vale: espera el título)
 
-  // Crea la tarea y la mete en "Por hacer"
-  // creartarea crea una tarea normal o recurrente y la mete en por hacer
+  // crearTarea crea una tarea normal o recurrente y la mete en por hacer
   crearTarea(datos) {
     let tarea;
     if (datos.cadaDias !== undefined) {
@@ -69,8 +66,6 @@ export class Tablero {
     this.columna("Por hacer").añadir(tarea);
     return tarea;
   }
-  // buscar(id): la tarea, esté en la columna que esté, o null
-  // dondeEsta(id): la Columna donde está, o null
 
   // Busca la tarea en todas las columnas; si no está, devuelve null
   // buscar devuelve la tarea con ese id esté donde esté
@@ -85,7 +80,6 @@ export class Tablero {
   }
 
   // Devuelve la columna donde está la tarea, si no devuelve null
-  // dondeesta devuelve la columna donde está la tarea
   dondeEsta(id) {
     for (const columna of this.#columnas.values()) {
       if (columna.tiene(id)) {
@@ -94,19 +88,13 @@ export class Tablero {
     }
     return null;
   }
-  // mover(id, destino): Error si no existe la tarea · Error si la columna destino está llena
-  //   (¡comprueba ANTES de quitarla de su columna, o se perdería!) · la mueve y la devuelve
 
   // Mueve la tarea a otra columna y la devuelve
-  // mover mueve la tarea a otra columna usando trasladar
   mover(id, destino) {
     return this.#trasladar(id, destino);
   }
-  // completar(id): la mueve a «Hecho» y añade a « Por hacer» lo que devuelva tarea.alCompletar()
-  //   ⚠️ Sin preguntar si es recurrente: eso es el polimorfismo
 
   // La pasa a «Hecho» y mete en «Por hacer» lo que devuelva alCompletar().
-  // completar pasa la tarea a hecho y añade lo que devuelva alcompletar
   completar(id) {
     const tarea = this.#trasladar(id, "Hecho");
     for (const nueva of tarea.alCompletar()) {
@@ -114,8 +102,6 @@ export class Tablero {
     }
     return tarea;
   }
-  // resumen(hoy = new Date()): { porHacer, enCurso, hecho, vencidas }
-  //   vencidas = las que estaVencida(hoy) y NO están en «Hecho»
 
   // Cuenta cuántas tareas hay en cada columna y cuántas están vencidas
   resumen(hoy = new Date()) {
@@ -166,8 +152,7 @@ export class Tablero {
   // toJSON(): { version, limiteEnCurso, columnas: { "Por hacer": [datos…], … } }
   //   JSON.stringify(tablero) lo llama solo. Sin él sale "{}": los # no se ven. Usa aDatos.
 
-  // Lo que se guarda en JSON: la versión, el límite WIP y las tareas de cada columna
-  // tojson indica lo que se guarda en json la versión el límite y las tareas
+  // tojson indica lo que se guarda en json: la versión, el límite y las tareas
   toJSON() {
     const columnas = {};
     for (const columna of this.columnas) {
@@ -180,7 +165,6 @@ export class Tablero {
     };
   }
 
-  /** Lo contrario de toJSON: el MISMO tablero (columnas, ids y límite WIP). Lanza si no encaja. */
   // desdejson rehace el mismo tablero a partir de los datos guardados
   static desdeJSON(datos) {
     // Tiene que ser un objeto de nuestra versión

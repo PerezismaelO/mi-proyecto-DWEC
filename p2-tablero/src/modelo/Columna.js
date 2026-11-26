@@ -22,19 +22,16 @@ export class Columna {
     this.limiteWip = limiteWip;
   }
 
-  // 2 · get llena: true si hay límite y ya hay tantas tareas como el límite
   // llena dice si la columna tiene límite y ya está completa
   get llena() {
     return this.limiteWip !== null && this.#tareas.length >= this.limiteWip;
   }
 
-  // 3 · get tareas: una COPIA del array (que nadie pueda tocar el tuyo desde fuera)
   // tareas devuelve una copia de las tareas de la columna
   get tareas() {
     return [...this.#tareas];
   }
-  // 4 · añadir(tarea): TypeError si no es instanceof Tarea · Error («… está llena …») si está
-  //     llena · si no, la guarda y la devuelve
+
   // añadir mete una tarea en la columna y da error si está llena
   añadir(tarea) {
     if (!(tarea instanceof Tarea)) {
@@ -47,8 +44,6 @@ export class Columna {
     return tarea;
   }
 
-  // 5 · quitar(id): la saca del array y la devuelve · Error («… no está …») si no la encuentra
-  //     Pista: findIndex + splice
   // quitar saca la tarea con ese id y la devuelve
   quitar(id) {
     const index = this.#tareas.findIndex((tarea) => tarea.id === id);
@@ -58,15 +53,10 @@ export class Columna {
     }
     return this.#tareas.splice(index, 1)[0];
   }
-  // 6 · tiene(id): true / false. Pista: some
   // tiene dice si la tarea con ese id está en la columna
   tiene(id) {
     return this.#tareas.some((tarea) => tarea.id === id);
   }
-
-  // 7 · ordenadas(): un array NUEVO ordenado: primero prioridad alta (usa t.peso), y a igual
-  //     prioridad, el límite más cercano; las que no tienen límite, al final.
-  //     Pista: [...this.#tareas].sort((a, b) => …) — ¿por qué la copia?
 
   // ordenadas devuelve una copia de las tareas ordenadas por prioridad y por fecha límite
   ordenadas() {

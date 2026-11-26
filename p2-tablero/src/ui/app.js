@@ -6,7 +6,7 @@ import { delegar } from "./delegacion.js";
 import { leerFormulario, mostrarErrores } from "./formulario.js";
 import { pintarLista } from "./tarjeta.js";
 
-/** Botones de cada tarjeta según su columna: [texto, data-accion] */
+// Botones de cada tarjeta según su columna
 const ACCIONES = {
   "Por hacer": [["Empezar →", "empezar"]],
   "En curso": [
@@ -20,6 +20,7 @@ const ACCIONES = {
 //   - titulo: obligatorio y como mucho 80 caracteres
 //   - cadaDias (si viene): entero mayor que 0. Si es correcto pero no hay limite, el error va
 //     en «limite»: una tarea que se repite necesita fecha límite
+
 // validar comprueba los datos del formulario y devuelve los errores
 export function validar(datos) {
   const errores = {};
@@ -117,7 +118,7 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
         avisar(error.message);
         return;
       }
-      throw error; // otro error: fallo del programa
+      throw error;
     }
     avisar("");
     pintar();
@@ -140,6 +141,7 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
  
   // ✍️ B6 · submit de `form`: preventDefault, leerFormulario, validar y mostrarErrores. Si hay errores,
   //   no se crea nada. Si no, tablero.crearTarea(datos) (como un cambio más) y form.reset().
+
     // listener del formulario valida los datos y si están bien crea la tarea
     form.addEventListener("submit", function (evento) {
     evento.preventDefault(); // que no recargue la página
