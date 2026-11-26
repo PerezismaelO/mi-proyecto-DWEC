@@ -81,7 +81,7 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
           tarjeta.append(boton);
         }
       }
-
+    
       const n = tareas.length;
       caja.querySelector(".contador").textContent =
         columna.limiteWip === null ? `(${n})` : `(${n}/${columna.limiteWip})`;
@@ -171,6 +171,16 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
 
 
 
+
+
+
+
+// A tareaConMateriales
+// B boton nuevo en cada tarjeta de porhacer
+// C traer las revisiones
+
+
+
 // Notas para la defensa
 
 // Listener
@@ -192,3 +202,24 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
 // va en trasladar de tablero con las otras reglas
 // siempre antes de quitar y añadir para que la tarea no se pierda
 // la pagina no se toca porque cambiar ya enseña el aviso
+
+
+
+// cosas que me pueden pedir
+
+
+// regla nueva
+// en trasladar de tablero un if y throw new movimientonopermitidoerror
+
+
+// boton nuevo
+// en acciones de app y una rama mas en el manejador de delegar
+// boton completar en por hacer solo se toca acciones
+
+
+// cambiar el limite
+// en el constructor de tablero cambiar el 3
+
+
+// dato nuevo en el resumen
+// en resumen de tablero y pintarlo en pintar

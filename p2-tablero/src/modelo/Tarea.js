@@ -88,4 +88,8 @@ export class Tarea {
     const limite = this.limite ? ` · límite ${formatear(this.limite)}` : "";
     return `#${this.id} [${this.#prioridad}] ${this.#titulo}${limite}`;
   }
+
+  comprobarPaso(desde, hasta) {
+    
+  }
 }

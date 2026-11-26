@@ -143,6 +143,7 @@ export class Tablero {
       throw new ColumnaLlenaError(columnaDestino);
     }
 
+
     const tarea = columnaOrigen.quitar(id);
     columnaDestino.añadir(tarea);
     return tarea;
@@ -187,6 +188,11 @@ export class Tablero {
     }
     return tablero;
   }
+
+  mover(id, destino) {
+  const origen = this.dondeEsta(id);
+  const tarea = this.buscar(id);
+  tarea.comprobarPaso(origen.nombre, destino);
 }
 
 // Comprueba con:  docker compose run --rm web npm test bloque-a
