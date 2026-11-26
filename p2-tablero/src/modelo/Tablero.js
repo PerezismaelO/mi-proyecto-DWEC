@@ -11,14 +11,14 @@ export class Tablero {
   static COLUMNAS = Object.freeze(["Por hacer", "En curso", "Hecho"]);
   static VERSION_DATOS = 1; // (bloque C) si algún día cambia el formato guardado, se sube
   // Privado: #columnas, un Map nombre → Columna
-   #columnas = new Map();
+  #columnas = new Map();
   // ✍️ A3 ──────────────────────────────────────────────────────────────────────
 
   // constructor crea las tres columnas y solo en curso lleva límite
   constructor(limiteEnCurso = 3) {
     // Crea las tres columnas; solo «En curso» lleva límite WIP (limiteEnCurso)
     for (const nombre of Tablero.COLUMNAS) { // Recorremos las 3 columnas: por hacer, en curso y hecho. 
-      const limite = nombre === "En curso" ? limiteEnCurso: undefined; // Solo la columna "En curso" tiene limite
+      const limite = nombre === "En curso" ? limiteEnCurso : undefined; // Solo la columna "En curso" tiene limite
       this.#columnas.set(nombre, new Columna(nombre, limite)) // Creamos las columnas
     }
   }
@@ -57,6 +57,11 @@ export class Tablero {
 
   // crearTarea crea una tarea normal o recurrente y la mete en por hacer
   crearTarea(datos) {
+    if (datos.dispositivos !== undefined) {
+      const { titulo, prioridad, limite, dispositivos } = datos;
+      const tarea = new TareaConDispositivos(titulo, prioridad, limite, dispositivos);
+      return this.columna("Por hacer").añadir(tarea);  // como hagas con las demás
+    }
     let tarea;
     if (datos.cadaDias !== undefined) {
       tarea = new TareaRecurrente(datos.titulo, datos.prioridad, datos.limite, datos.cadaDias);
@@ -108,10 +113,10 @@ export class Tablero {
     const porHacer = this.columna("Por hacer").tareas;
     const enCurso = this.columna("En curso").tareas;
     const hecho = this.columna("Hecho").tareas;
- 
+
     const pendientes = [...porHacer, ...enCurso];
     const vencidas = pendientes.filter((t) => t.estaVencida(hoy)).length;
- 
+
     return {
       porHacer: porHacer.length,
       enCurso: enCurso.length,
@@ -126,8 +131,8 @@ export class Tablero {
   //   Pista: mover y completar hacen casi lo mismo. Un método privado #trasladar(id, destino)
   //   con las comprobaciones evita escribirlas dos veces.
 
-    // trasladar comprueba las reglas antes de tocar nada y si todo va bien mueve la tarea
-    #trasladar(id, destino) {
+  // trasladar comprueba las reglas antes de tocar nada y si todo va bien mueve la tarea
+  #trasladar(id, destino) {
     const columnaDestino = this.columna(destino);
     const columnaOrigen = this.dondeEsta(id);
 
@@ -190,9 +195,9 @@ export class Tablero {
   }
 
   mover(id, destino) {
-  const origen = this.dondeEsta(id);
-  const tarea = this.buscar(id);
-  tarea.comprobarPaso(origen.nombre, destino);
-}
+    const origen = this.dondeEsta(id);
+    const tarea = this.buscar(id);
+    tarea.comprobarPaso(origen.nombre, destino);
+  }
 
 // Comprueba con:  docker compose run --rm web npm test bloque-a
