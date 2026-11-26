@@ -42,8 +42,7 @@ export class TareaRecurrente extends Tarea {
 
   // devuelve el texto de la tarea y cada cuántos días se repite
   toString() {
-    return `${super.toString()} cada ${this.cadaDias} días`;
-  }
+    return `${super.toString()} · 🔁 cada ${this.cadaDias} días`;}
 }
 // Comprueba con:  docker compose run --rm web npm test 2-recurrente
 
